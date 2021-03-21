@@ -9,7 +9,7 @@ const del = require('del');
 const htmlmin = require('gulp-html-minifier');
 
 const source = 'src';
-const dist = 'dist';
+const dist = 'docs';
 const paths = {
     dist,
     src: source,
