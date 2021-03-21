@@ -6,7 +6,7 @@ const purgecss = require('gulp-purgecss');
 const concat = require('gulp-concat');
 const browserSync = require('browser-sync').create();
 const del = require('del');
-const htmlmin = require('gulp-html-minifier');
+const htmlmin = require('gulp-htmlmin');
 
 const source = 'src';
 const dist = 'docs';
