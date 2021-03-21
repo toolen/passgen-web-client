@@ -1,0 +1,40 @@
+{
+  "name": "passgen-web-client",
+  "version": "1.0.0",
+  "description": "Simple web client for passgen service",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "gulp build",
+    "dev": "gulp dev",
+    "serve": "http-server dist --ssl --cert cert.pem -a 127.0.0.1 -p 8080 --gzip",
+    "cert": "openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout key.pem -out cert.pem",
+    "lighthouse": "lighthouse https://127.0.0.1:8080 --view --chrome-flags=\"--ignore-certificate-errors\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/toolen/passgen-web-client.git"
+  },
+  "author": "Dmitrii Zakharov (dmitrii@zakharov.cc)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/toolen/passgen-web-client/issues"
+  },
+  "homepage": "https://github.com/toolen/passgen-web-client#readme",
+  "devDependencies": {
+    "browser-sync": "^2.26.14",
+    "del": "^6.0.0",
+    "gulp": "^4.0.2",
+    "gulp-concat": "^2.6.1",
+    "gulp-csso": "^4.0.1",
+    "gulp-html-minifier": "^0.1.8",
+    "gulp-purgecss": "^4.0.3",
+    "gulp-rename": "^2.0.0",
+    "gulp-uglify": "^3.0.2",
+    "http-server": "^0.12.3",
+    "lighthouse": "^7.3.0"
+  },
+  "dependencies": {
+    "awsm.css": "^3.0.7"
+  }
+}
