@@ -1,0 +1,7 @@
+dist/
+docs/
+node_modules/
+.git/
+LICENSE
+README.md
+*.pem
