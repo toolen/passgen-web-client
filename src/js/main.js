@@ -1,15 +1,19 @@
 (function () {
     var httpRequest,
         password = '',
-        len = document.getElementById('len'),
-        btn = document.getElementById('btn'),
-        out = document.getElementById('out'),
+        passwordLengthInput = document.getElementById('len'),
         err = document.getElementById('error'),
-        clipboard = document.getElementById('clipboard');
+        excludePunctuationCheckbox = document.getElementById('exclude_punctuation'),
+        outputElement = document.getElementById('out'),
+        refreshButton = document.getElementById('refresh'),
+        revealButton = document.getElementById('reveal'),
+        copyToClipboardButton = document.getElementById('clipboard');
 
     function makeRequest() {
+        var excludePunctuation = excludePunctuationCheckbox.checked ? 'true' : '';
+
         password = '';
-        out.value = '';
+        outputElement.value = '';
         err.innerText = '';
 
         httpRequest = new XMLHttpRequest();
@@ -19,7 +23,7 @@
             return false;
         }
         httpRequest.onreadystatechange = alertContents;
-        httpRequest.open('GET', 'https://passgen.zakharov.cc/api/v1/passwords?length=' + len.value);
+        httpRequest.open('GET', 'https://passgen.zakharov.cc/api/v1/passwords?length=' + passwordLengthInput.value + '&exclude_punctuation=' + excludePunctuation);
         httpRequest.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
         httpRequest.responseType = 'json';
         httpRequest.send();
@@ -35,7 +39,7 @@
                     char = password[i];
                     (function(c) {
                         setTimeout(function() {
-                            out.value = out.value + c
+                            outputElement.value = outputElement.value + c
                         }, i * 20)
                     })(char);
                 }
@@ -45,8 +49,18 @@
         }
     }
 
+    function reveal() {
+        if(outputElement.type === 'password') {
+            outputElement.type = 'text';
+            revealButton.innerText = 'Hide password';
+        } else {
+            outputElement.type = 'password';
+            revealButton.innerText = 'Show password';
+        }
+    }
+
     if (navigator.clipboard) {
-        clipboard.addEventListener('click', function() {
+        copyToClipboardButton.addEventListener('click', function() {
             navigator.clipboard.writeText(password).then(function() {
                 //
             }, function() {
@@ -54,11 +68,13 @@
             });
         });
     } else {
-        clipboard.style.display = 'none';
+        copyToClipboardButton.style.display = 'none';
     }
 
-    len.addEventListener('input', makeRequest);
-    btn.addEventListener('click', makeRequest);
+    passwordLengthInput.addEventListener('input', makeRequest);
+    excludePunctuationCheckbox.addEventListener('change', makeRequest);
+    refreshButton.addEventListener('click', makeRequest);
+    revealButton.addEventListener('click', reveal);
 
     makeRequest();
 })();
