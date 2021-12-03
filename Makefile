@@ -10,7 +10,7 @@ image:
 	make trivy
 	make size
 container:
-	docker run -p 8080:80 --cap-drop=ALL $(tag)
+	docker run -p 8080:80 --cap-drop=ALL --cap-add CAP_CHOWN --cap-add CAP_NET_BIND_SERVICE --cap-add CAP_SETGID --cap-add CAP_SETUID $(tag)
 hadolint:
 	docker run --rm -i hadolint/hadolint:$(hadolint_version) < Dockerfile
 trivy:
