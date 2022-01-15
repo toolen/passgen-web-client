@@ -1,4 +1,4 @@
-FROM node:16.13.1-bullseye-slim@sha256:89f069754327ce042f83175ece2c6f8ffe45b8f82b723372dcd59bb9fa64b08e AS builder
+FROM node:16.13.2-bullseye-slim@sha256:247f823613bb67e079fc9be272c6535c45bba13d5620fc38e131fc83d1fad61f AS builder
 COPY package.json package-lock.json /app/
 WORKDIR /app
 RUN npm i
