@@ -1,4 +1,4 @@
-name: dashboard-frontend
+name: lighthouse
 
 on: [push]
 
@@ -30,9 +30,3 @@ jobs:
         env:
           CR_PAT: ${{ secrets.CR_PAT }}
         run: make push-to-ghcr
-
-    services:
-      mongo:
-        image: mongo:4.4.9
-        ports:
-          - 27017:27017
