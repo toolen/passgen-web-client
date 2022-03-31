@@ -1,24 +1,31 @@
 repository = toolen/passgen-web-client
-version = $(shell cat package.json | jq -r .version)
-tag = $(repository):$(version)
-hadolint_version=2.8.0
-trivy_version=0.21.1
+version = $(shell npm run version | tail -1)
+image_tag = ghcr.io/$(repository):$(version)
+hadolint_version=2.9.3
+trivy_version=0.24.4
 
 image:
 	make hadolint
-	docker build --pull --no-cache -t $(tag) .
+	docker build --pull --no-cache -t $(image_tag) .
 	make trivy
 	make size
 container:
-	docker run -p 8080:80 --cap-drop=ALL --cap-add CAP_CHOWN --cap-add CAP_NET_BIND_SERVICE --cap-add CAP_SETGID --cap-add CAP_SETUID $(tag)
+	docker run -p 8080:80 --cap-drop=ALL --cap-add CAP_CHOWN --cap-add CAP_NET_BIND_SERVICE --cap-add CAP_SETGID --cap-add CAP_SETUID $(image_tag)
 hadolint:
 	docker run --rm -i hadolint/hadolint:$(hadolint_version) < Dockerfile
 trivy:
-	docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v ~/.cache/trivy:/root/.cache/ aquasec/trivy:$(trivy_version) --ignore-unfixed $(tag)
+	docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v ~/.cache/trivy:/root/.cache/ aquasec/trivy:$(trivy_version) image --ignore-unfixed $(image_tag)
 size:
 	docker images | grep $(repository) | grep $(version)
 scan:
-	trivy image $(tag)
+	trivy image $(image_tag)
 push:
-	docker trust sign $(tag)
-
+	docker trust sign $(image_tag)
+push-to-ghcr:
+	docker login ghcr.io -u toolen -p $(CR_PAT)
+	docker push $(image_tag)
+ci:
+	npm install
+	npm install -g @lhci/cli
+	npm run build
+	lhci autorun
