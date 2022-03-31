@@ -26,7 +26,7 @@ jobs:
         run: make image
 
       - name: Push image
-        if: ${{ github.ref_name == 'master' }}
+        if: ${{ github.ref_name == 'main' }}
         env:
           CR_PAT: ${{ secrets.CR_PAT }}
         run: make push-to-ghcr
