@@ -1,4 +1,4 @@
-FROM node:16.14.2-bullseye-slim@sha256:21dd0bf7528e5268640a206c0327fdecba6a0bad1444ea17b4de0c87863d57cc AS builder
+FROM node:18.12.1-bullseye-slim@sha256:0c3ea57b6c560f83120801e222691d9bd187c605605185810752a19225b5e4d9 AS builder
 
 LABEL maintainer="dmitrii@zakharov.cc"
 LABEL org.opencontainers.image.source="https://github.com/toolen/passgen-web-client"
@@ -17,13 +17,13 @@ RUN set -ex \
     && npm i \
     && npm run build
 
-FROM nginx:1.20.2-alpine@sha256:f6609f898bcdad15047629edc4033d17f9f90e2339fb5ccb97da267f16902251
+FROM nginx:1.22.1-alpine@sha256:43cd1aa2a26fbe7e6a4f9ba6cc289ea885731fbafe078b62983325a60c8c2c56
 
 LABEL maintainer="dmitrii@zakharov.cc"
 LABEL org.opencontainers.image.source="https://github.com/toolen/passgen-web-client"
 
 RUN apk upgrade \
-    && apk add --no-cache curl=7.79.1-r0
+    && apk add --no-cache curl=7.83.1-r5
 
 COPY --from=builder /app/dist /usr/share/nginx/html
 
