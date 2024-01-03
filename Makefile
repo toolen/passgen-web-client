@@ -2,7 +2,7 @@ repository = toolen/passgen-web-client
 version = $(shell npm run version | tail -1)
 image_tag = ghcr.io/$(repository):$(version)
 hadolint_version=2.12.0
-trivy_version=0.35.0
+trivy_version=0.48.1
 
 image:
 	make hadolint
