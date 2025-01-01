@@ -17,7 +17,7 @@ RUN set -ex \
     && npm i \
     && npm run build
 
-FROM nginxinc/nginx-unprivileged:1.25.3-alpine3.18-slim@sha256:c9909a627049d4f0f603681f23332fb85aaba78e8c36d546cd7aaf170211d06c
+FROM nginxinc/nginx-unprivileged:1.26-alpine3.20@sha256:a6c15b8056a0b9c4551d1f32ccde5020f3742beb09cb3e36d76a3f1bbe0bc6eb
 
 LABEL maintainer="dmitrii@zakharov.cc"
 LABEL org.opencontainers.image.source="https://github.com/toolen/passgen-web-client"
@@ -25,7 +25,7 @@ LABEL org.opencontainers.image.source="https://github.com/toolen/passgen-web-cli
 USER root
 
 RUN apk upgrade \
-    && apk add --no-cache curl=8.5.0-r0
+    && apk add --no-cache curl=8.11.1-r0
 
 USER nginx
 
