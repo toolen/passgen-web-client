@@ -17,17 +17,21 @@ RUN set -ex \
     && npm i \
     && npm run build
 
-FROM nginxinc/nginx-unprivileged:1.25.3-alpine3.18-slim@sha256:c9909a627049d4f0f603681f23332fb85aaba78e8c36d546cd7aaf170211d06c
+FROM nginxinc/nginx-unprivileged:1.29.3-alpine3.22@sha256:42c794e539b375187fa8b34b8b3f693a919b0ce8009a85e862caf39186c10b4f
 
 LABEL maintainer="dmitrii@zakharov.cc"
 LABEL org.opencontainers.image.source="https://github.com/toolen/passgen-web-client"
 
+ENV \
+    BUSYBOX_VERSION=1.37.0-r20
+
 USER root
 
-RUN apk upgrade \
-    && apk add --no-cache curl=8.5.0-r0
+RUN \
+   apk update && \
+   apk add --no-cache busybox=$BUSYBOX_VERSION
 
-USER nginx
+USER 101
 
 COPY --from=builder /app/dist /usr/share/nginx/html
 
